@@ -1,4 +1,4 @@
-from hashing import Hashing
+from hashlib import sha256
 
 
 class Transaction:
@@ -13,7 +13,7 @@ class Transaction:
         self.sender = transaction_sender
         self.receiver = transaction_receiver
         self.value = value
-        self.hash = Hashing.make_transaction_hash(self)
+        self.hash = sha256(str(int(self.receiver + self.sender + self.id + self.value)).encode()).hexdigest()
 
     def get_id(self) -> int:
         return self.id
