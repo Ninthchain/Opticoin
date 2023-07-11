@@ -1,0 +1,2 @@
+# Opticoin
+Hmm new bitcoin coming soon?!??!?!?
