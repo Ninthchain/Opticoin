@@ -14,5 +14,5 @@ class Transaction:
         self.sender = transaction_sender
         self.receiver = transaction_receiver
         self.value = value
-        self.hash = sha256(str(elf.receiver + self.sender + str(self.id) + str(self.value)).encode()).hexdigest()
+        self.hash = sha256(str(self.receiver + self.sender + str(self.id) + str(self.value)).encode()).hexdigest()
         self.is_verified = False
