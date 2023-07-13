@@ -6,12 +6,16 @@ from opticoin.block.types import Transaction
 
 class MerkleTree:
     hashes: List[List[str]]
+    tree_root: str
 
     def __init__(self):
         self.hashes = list()
+        self.tree_root = str()
 
     def plant(self, transactions: list) -> None:
         count = len(transactions)
+        if count == 0:
+            return
         current_hash_line = list()
         for i in range(0, count):
             current_hash_line.append(transactions[i])
@@ -28,6 +32,9 @@ class MerkleTree:
             count //= 2
             self.hashes.insert(0, current_hash_line)
             current_hash_line = list()
+
+        self.hashes.pop(0)
+        self.tree_root = self.hashes[0][0]
 
     def get_iterable(self) -> List[List[str]]:
         return self.hashes

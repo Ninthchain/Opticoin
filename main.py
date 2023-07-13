@@ -9,35 +9,29 @@ import rsa as rsa
 
 from opticoin.block.structures import Block
 from opticoin.block.types import Transaction
+from opticoin.blockchain import Blockchain
 
+blockchain = Blockchain()
+next_tx_id = 0
+for block_id in range(0, 5):
+    for _ in range(0, 16):
+        tx_data = input().split()
+        new_transaction = Transaction(
+            transaction_id=next_tx_id,
+            transaction_sender=tx_data[0],
+            transaction_receiver=tx_data[1],
+            value=tx_data[2]
+        )
+        blockchain.add_new_transaction(new_transaction)
+        next_tx_id += 1
+    blockchain.add_block()
+    blockchain.mine()
 
-class Blockchain:
-
-    @property
-    def last_block(self):
-        return self.chain[-1]
-
-    def __init__(self):
-        self.max_transactions = 5
-        self.chain = list()
-        self.unconfirmed_transactions = list()
-        self.transactions = list()
-        self.create_genesis_block()
-
-    def create_genesis_block(self) -> None:
-        genesis_block = Block(0, "0000000000000000000000000000000000000000000000000000000000000000", [])
-        self.chain.append(genesis_block)
-
-    def add_block(self) -> None:
-        previous_block = self.chain[len(self.chain) - 1]
-        new_block = Block(previous_block.id, previous_block.hash, self.transactions[0: self.max_transactions])
-        self.chain.append(new_block)
-
-    def add_new_transaction(self, transaction: Transaction):
-        self.transactions.append(transaction)
-
-    def mine(self):
-        # Но блокчейн ещё в стадии разработки!!!!
-        raise NotImplementedError()
+for block in blockchain.chain:
+    print(f"\nblock number: {block.id}, nonce: {block.nonce}\nmerkle_root: {block.merkle_tree.tree_root}")
+    print(f"hash: {block.hash}\n prev_hash: {block.previous_hash}")
+    for transaction in block.transactions:
+        print(f"transaction number: {transaction.id}, hash: {transaction.hash}")
+        print(f"from: {transaction.sender}, to: {transaction.receiver}, value: {transaction.value}")
 
 
