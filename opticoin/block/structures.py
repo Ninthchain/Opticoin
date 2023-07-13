@@ -11,32 +11,29 @@ class MerkleTree:
         self.hashes = list()
 
     def plant(self, transactions: list) -> None:
-        current_hash_line = list()
-        for transaction in transactions:
-            current_hash_line.append(transaction.get_hash())
-
         count = len(transactions)
+        current_hash_line = list()
+        for i in range(0, count):
+            current_hash_line.append(transactions[i])
         offset = 0
 
+        self.hashes.insert(0, current_hash_line)
+
         while count > 0:
-            self.hashes.append(current_hash_line)
-            current_hash_line = list()
 
             for i in range(0, count - 1, 2):
-                current_hash_line.append(
-                    self.combine_leaves(
-                        transactions[offset + count],
-                        transactions[offset + count + 1]
-                    )
-                )
+                current_hash_line.insert(0, self.combine_leaves(offset + count, offset + count + i))
+
             offset += count
             count //= 2
+            self.hashes.insert(0, current_hash_line)
+            current_hash_line = list()
 
     def get_iterable(self) -> List[List[str]]:
         return self.hashes
 
     def combine_leaves(self, left_leave: str, right_leave: str) -> str:
-        return sha256((left_leave + right_leave).encode()).hexdigest()
+        return sha256(str(left_leave + right_leave).encode()).hexdigest()
 
 
 class Block:

@@ -1,16 +1,24 @@
+import math
+import random
+from _decimal import Decimal
+from hashlib import sha256
 from queue import Queue
 from typing import List
+
+import rsa as rsa
 
 from opticoin.block.structures import Block
 from opticoin.block.types import Transaction
 
 
 class Blockchain:
+
     @property
     def last_block(self):
         return self.chain[-1]
 
     def __init__(self):
+        self.max_transactions = 5
         self.chain = list()
         self.unconfirmed_transactions = list()
         self.transactions = list()
@@ -22,7 +30,7 @@ class Blockchain:
 
     def add_block(self) -> None:
         previous_block = self.chain[len(self.chain) - 1]
-        new_block = Block(previous_block.id, previous_block.hash, self.transactions)
+        new_block = Block(previous_block.id, previous_block.hash, self.transactions[0: self.max_transactions])
         self.chain.append(new_block)
 
     def add_new_transaction(self, transaction: Transaction):
@@ -32,13 +40,4 @@ class Blockchain:
         # Но блокчейн ещё в стадии разработки!!!!
         raise NotImplementedError()
 
-
-brouhaha = Blockchain()
-
-brouhaha.add_new_transaction(Transaction(0, "asdas", "informatics", 2800))
-
-for block in brouhaha.chain:
-    print(block.id, block.transactions)
-    for element in block.merkle_tree.get_iterable():
-        print(element)
 
