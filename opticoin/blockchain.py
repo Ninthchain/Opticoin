@@ -9,7 +9,7 @@ class Blockchain:
         return self.chain[-1]
 
     def __init__(self):
-        self.max_transactions = 16
+        self.max_block_transactions = 1024
         self.chain = list()
         self.unconfirmed_transactions = list()
         self.transactions = list()
@@ -21,7 +21,7 @@ class Blockchain:
 
     def add_block(self) -> None:
         previous_block = self.chain[len(self.chain) - 1]
-        new_block = Block(previous_block.id + 1, previous_block.hash, self.transactions[0: self.max_transactions])
+        new_block = Block(previous_block.id + 1, previous_block.hash, self.transactions[0: self.max_block_transactions])
         self.chain.append(new_block)
 
     def add_new_transaction(self, transaction: Transaction):

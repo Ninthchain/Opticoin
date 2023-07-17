@@ -57,7 +57,7 @@ class Block:
         self.transactions = block_transactions
         self.merkle_tree = MerkleTree()
         self.merkle_tree.plant(self.transactions)
-        self.nonce, self.hash = self.block_hash_calculation(self.transactions_hash_calculation())
+        self.nonce, self.hash = self.block_hash_calculation(self.transactions_hash_calculation(), 5)
 
     def transactions_hash_calculation(self):
         transactions_hash = ""
